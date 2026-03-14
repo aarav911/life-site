@@ -8,7 +8,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node
@@ -30,24 +30,26 @@ jobs:
           cd ios/App
           pod install
 
-      - name: Build iOS archive
+      - name: Build iOS app
         run: |
-          cd ios
+          cd ios/App
           xcodebuild \
-          -workspace App/App.xcworkspace \
-          -scheme App \
-          -configuration Release \
-          -sdk iphoneos \
-          build
+            -workspace App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            build
 
       - name: Package IPA
         run: |
+          cd ios/App/build/Build/Products/Release-iphoneos
           mkdir Payload
-          cp -r ios/build/Release-iphoneos/App.app Payload/
+          cp -r App.app Payload/
           zip -r LifeSite.ipa Payload
 
-      - name: Upload artifact
+      - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ios-app
-          path: LifeSite.ipa
+          name: LifeSite-iOS
+          path: ios/App/build/Build/Products/Release-iphoneos/LifeSite.ipa
