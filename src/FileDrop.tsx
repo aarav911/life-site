@@ -24,8 +24,8 @@ export default function FileDrop() {
 
     } catch (err) {
 
-      console.error(err)
-      alert("Server upload failed")
+      console.error("Server upload error:", err)
+      alert("Server upload failed: " + String(err))
 
     }
 
@@ -37,7 +37,15 @@ export default function FileDrop() {
 
       const { Filesystem, Directory } = await import("@capacitor/filesystem")
 
+      console.log("Filesystem plugin loaded")
+
       const base64 = await fileToBase64(file)
+
+      console.log("Base64 conversion complete")
+
+      // request permissions (important for iOS)
+      const perm = await Filesystem.requestPermissions()
+      console.log("Filesystem permissions:", perm)
 
       // ensure folder exists
       await Filesystem.mkdir({
@@ -46,6 +54,8 @@ export default function FileDrop() {
         recursive: true
       })
 
+      console.log("Folder ensured")
+
       await Filesystem.writeFile({
         path: `LifeSiteFolder/${file.name}`,
         data: base64,
@@ -53,12 +63,22 @@ export default function FileDrop() {
       })
 
       console.log("Saved locally:", file.name)
+
       alert("Saved locally: " + file.name)
 
-    } catch (err) {
+    } catch (err: unknown) {
 
       console.error("Native save failed:", err)
-      alert("Native save failed — check console")
+
+      let message = "Unknown error"
+
+      if (err instanceof Error) {
+        message = err.message
+      } else {
+        message = JSON.stringify(err)
+      }
+
+      alert("Native save failed: " + message)
 
     }
 
@@ -66,16 +86,20 @@ export default function FileDrop() {
 
   async function saveFile(file: File) {
 
-    console.log("Detected environment:", isNative() ? "native" : "web")
+    const native = isNative()
 
-    if (isNative()) {
+    console.log("Environment:", native ? "native" : "web")
+
+    if (native) {
 
       alert("Running native storage")
+
       await saveNative(file)
 
     } else {
 
       alert("Running server upload")
+
       await uploadFile(file)
 
     }
@@ -133,7 +157,13 @@ function fileToBase64(file: File): Promise<string> {
 
     const reader = new FileReader()
 
-    reader.onload = () => resolve((reader.result as string).split(",")[1])
+    reader.onload = () => {
+
+      const result = reader.result as string
+
+      resolve(result.split(",")[1])
+
+    }
 
     reader.onerror = reject
 
