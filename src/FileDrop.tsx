@@ -37,32 +37,29 @@ export default function FileDrop() {
 
       const { Filesystem, Directory } = await import("@capacitor/filesystem")
 
-      console.log("Filesystem plugin loaded")
-
       const base64 = await fileToBase64(file)
 
-      console.log("Base64 conversion complete")
+      // check if folder exists
+      try {
+        await Filesystem.stat({
+          path: "LifeSiteFolder",
+          directory: Directory.Documents
+        })
+      } catch {
 
-      // request permissions (important for iOS)
-      const perm = await Filesystem.requestPermissions()
-      console.log("Filesystem permissions:", perm)
+        // create folder only if it doesn't exist
+        await Filesystem.mkdir({
+          path: "LifeSiteFolder",
+          directory: Directory.Documents
+        })
 
-      // ensure folder exists
-      await Filesystem.mkdir({
-        path: "LifeSiteFolder",
-        directory: Directory.Documents,
-        recursive: true
-      })
-
-      console.log("Folder ensured")
+      }
 
       await Filesystem.writeFile({
         path: `LifeSiteFolder/${file.name}`,
         data: base64,
-        directory: Directory.Documents
+        directory: Directory.Documents,
       })
-
-      console.log("Saved locally:", file.name)
 
       alert("Saved locally: " + file.name)
 
@@ -92,13 +89,9 @@ export default function FileDrop() {
 
     if (native) {
 
-      alert("Running native storage")
-
       await saveNative(file)
 
     } else {
-
-      alert("Running server upload")
 
       await uploadFile(file)
 
@@ -159,9 +152,19 @@ function fileToBase64(file: File): Promise<string> {
 
     reader.onload = () => {
 
-      const result = reader.result as string
+      if (typeof reader.result !== "string") {
+        reject(new Error("Invalid reader result"))
+        return
+      }
 
-      resolve(result.split(",")[1])
+      const parts = reader.result.split(",")
+
+      if (parts.length < 2) {
+        reject(new Error("Invalid base64 format"))
+        return
+      }
+
+      resolve(parts[1])
 
     }
 
