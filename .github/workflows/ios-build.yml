@@ -22,13 +22,11 @@ jobs:
       - name: Build React app
         run: npm run build
 
-      - name: Sync Capacitor
-        run: npx cap sync ios && npx cap sync ios
+      - name: Add iOS platform
+        run: npx cap add ios
 
-      - name: Install CocoaPods
-        run: |
-          cd ios/App
-          pod install
+      - name: Sync Capacitor
+        run: npx cap sync ios
 
       - name: Build iOS app
         run: |
