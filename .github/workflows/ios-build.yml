@@ -23,7 +23,7 @@ jobs:
         run: npm run build
 
       - name: Sync Capacitor
-        run: npx cap sync ios
+        run: npx cap sync ios && npx cap sync ios
 
       - name: Install CocoaPods
         run: |
