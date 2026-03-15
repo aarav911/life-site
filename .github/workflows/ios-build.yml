@@ -31,7 +31,7 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync ios
 
-      - name: Build iOS app
+      - name: Build iOS app (unsigned)
         run: |
           cd ios/App
           xcodebuild \
@@ -40,6 +40,9 @@ jobs:
             -configuration Release \
             -sdk iphoneos \
             -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
             build
 
       - name: Package IPA
