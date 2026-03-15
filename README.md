@@ -2,11 +2,10 @@
 
 A **local-first life management system** built for personal use.
 
-![Flowchart](photos(bs)/flowchart/png)
+![Flowchart](photos(bs)/flowchart.png)
+This is how the process will go on for the future. Basically, i will find problems in my life: solve them, and then operationalize them in this app. Simple. Life long project. 
 
-The goal of this project is simple: build a system that helps manage life (notes, files, ideas, tasks, knowledge) while keeping **full ownership of data** and **zero ongoing cost**.
 
-This project is intentionally custom-built to fit my workflow rather than relying on existing productivity software.
 
 ---
 
