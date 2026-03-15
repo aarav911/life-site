@@ -8,40 +8,76 @@ export default function FileDrop() {
 
   async function uploadFile(file: File) {
 
-    const formData = new FormData()
-    formData.append("file", file)
+    try {
 
-    const res = await fetch("http://10.64.123.42:3001/upload", {
-      method: "POST",
-      body: formData
-    })
+      const formData = new FormData()
+      formData.append("file", file)
 
-    const data = await res.json()
+      const res = await fetch("http://10.64.123.42:3001/upload", {
+        method: "POST",
+        body: formData
+      })
 
-    alert("Saved: " + data.file)
+      const data = await res.json()
+
+      alert("Saved (server): " + data.file)
+
+    } catch (err) {
+
+      console.error(err)
+      alert("Server upload failed")
+
+    }
+
   }
 
   async function saveNative(file: File) {
 
-    const { Filesystem, Directory } = await import("@capacitor/filesystem")
+    try {
 
-    const base64 = await fileToBase64(file)
+      const { Filesystem, Directory } = await import("@capacitor/filesystem")
 
-    await Filesystem.writeFile({
-      path: `LifeSiteFolder/${file.name}`,
-      data: base64,
-      directory: Directory.Documents
-    })
+      const base64 = await fileToBase64(file)
 
-    alert("Saved locally: " + file.name)
+      // ensure folder exists
+      await Filesystem.mkdir({
+        path: "LifeSiteFolder",
+        directory: Directory.Documents,
+        recursive: true
+      })
+
+      await Filesystem.writeFile({
+        path: `LifeSiteFolder/${file.name}`,
+        data: base64,
+        directory: Directory.Documents
+      })
+
+      console.log("Saved locally:", file.name)
+      alert("Saved locally: " + file.name)
+
+    } catch (err) {
+
+      console.error("Native save failed:", err)
+      alert("Native save failed — check console")
+
+    }
+
   }
 
   async function saveFile(file: File) {
 
+    console.log("Detected environment:", isNative() ? "native" : "web")
+
     if (isNative()) {
+
+      alert("Running native storage")
       await saveNative(file)
+
     } else {
+
+      alert("Running server upload")
       await uploadFile(file)
+
     }
 
   }
@@ -51,6 +87,7 @@ export default function FileDrop() {
     e.preventDefault()
 
     const file = e.dataTransfer.files[0]
+
     if (file) saveFile(file)
 
   }
@@ -58,6 +95,7 @@ export default function FileDrop() {
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
 
     const file = e.target.files?.[0]
+
     if (file) saveFile(file)
 
   }
