@@ -3,9 +3,7 @@
 A **local-first life management system** built for personal use.
 
 ![Flowchart](photos(bs)/flowchart.png)
-This is how the process will go on for the future. Basically, i will find problems in my life: solve them, and then operationalize them in this app. Simple. Life long project. 
-
-the problems along with their solutions(ie models) are basically, informally written in the problems.md file in the problems folder. i may or may not make a new issue for it. i might as well just implement the solution to that problem in the app directly. yay no bueracracy. 
+This is how the process will go on for the future. Basically, i will find problems in my life: solve them, and then operationalize them in this app. Simple. Life long project. the problems along with their solutions(ie models) are basically, informally written in the problems.md file in the problems folder. i may or may not make a new issue for it. i might as well just implement the solution to that problem in the app directly. yay no bueracracy. 
 ---
 
 # Motivation
