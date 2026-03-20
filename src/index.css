@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* =========================
+   THEME VARIABLES
+========================= */
 
 @layer base {
   :root,
@@ -99,6 +101,10 @@
   }
 }
 
+/* =========================
+   BASE STYLES
+========================= */
+
 @layer base {
   * {
     @apply border-border;
@@ -108,7 +114,18 @@
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', sans-serif;
   }
+
+  /* 🔥 iOS INPUT ZOOM FIX */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
 }
+
+/* =========================
+   COMPONENTS
+========================= */
 
 @layer components {
   .glass-card {
@@ -122,7 +139,8 @@
 
   .glass-card-hover:hover {
     @apply border-primary/30;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px hsl(187 92% 69% / 0.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
+      0 0 20px hsl(187 92% 69% / 0.05);
   }
 
   .context-pill {
@@ -146,19 +164,15 @@
   }
 }
 
-@layer base {
-  body {
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-  }
-}
+/* =========================
+   SAFE AREA (CLEAN VERSION)
+========================= */
 
 @layer utilities {
   .pt-safe {
     padding-top: env(safe-area-inset-top);
   }
+
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom);
   }
