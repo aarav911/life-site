@@ -356,12 +356,6 @@ Local ownership of data
 
 The first real version of **LifeSite** exists.
 
-
-## Personal notes (March 15, 2026)
-The vision is to make it a proper life management app, perfectly custom tailered to my specific needs, and with absolutely 0 cost (even though i had to buy a usb convertor :(). The problem was that i wanted to use that app on both my laptop and my phone. And i happened to be dumb enough to own an iphone. SO, i had to do a lot more. I started off with a vite project and made the UI in react. now, it turns out that the browser cant write files locally (unless you use IndexDB, which i didnt want to do, because it was still technically the browsers data and not mine). So, then i wrote a ts server to get the files sent by the UI, and that server has access to the directory and thus it can write to it. That was one part: the app was working from the laptop side. Now, i wanted to do the exact same thing on my iphone as well. So, i had to go through the route of wrapping the react using capacitor, then using github actions to build the .ipa file, and then use iloader to install sidestore which then inturn allow my app to be install and be available for more than 7 days. I HATE APPLE. The reason why all of this was done was because i wanted the apps to have the same state, and thus the same data. The only that could have happened was if i had the data in specific folders on both my devices and used a magical tool called syncthing to sync them. Inorder for me to read and write data from a local directory on my iphone i had to have a native app. A PWA would not be allows to read or write to the local directory. Thats why i had to go through all the pain. But, its worth it: because now i have a system that somewhat reliably has the same app on two different devices, has access to the same state/data and can manipulate it. So, we have colaboration, and we have localized data with full ownership. 
-
-Turns out that by doing that i had stumbled across something people call Local-first Software, and my architecture happens to just follow the exact philosophy as they do. Cool, to see that i am not the only one insane here. 
-
-Now, the task is to learn these technologies a bit more deeply (over time), and actually design the site. So, things like eactly what do i want on the site, what features or functionalites will actually manage and organize my life, learning some UIUX and making it beautiful (light mode and dark mode), and the data model, and the specifics of those kinds of stuff. 
-
-I should also probably find some local first community and join it, and ask people to roast my architecture. Maybe ill redesign it. Who knows. All i know for now, is that this shit works (atleast for my devices), and that i succesfully made my first real software project(atleast v1). 
+ 
+ ---
+some local first community and join it, and ask people to roast my architecture. Maybe ill redesign it. Who knows. All i know for now, is that this shit works (atleast for my devices), and that i succesfully made my first real software project(atleast v1). 
